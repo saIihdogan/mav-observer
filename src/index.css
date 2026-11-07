@@ -1,0 +1,82 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #0b0f17;
+  --color-panel: #121826;
+  --color-panel-2: #182033;
+  --color-line: rgb(255 255 255 / 0.09);
+  --color-ink: #f2f4f8;
+  --color-ink-2: #a9b1c2;
+  --color-ink-3: #6c7589;
+  --color-accent: #ff8a1f;
+  --color-good: #34d399;
+  --color-bad: #f87171;
+  --color-gold: #ffd166;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/*
+ * One rem scales with the 16:9 viewport: ~12px at 800x450, ~13px at 907x510,
+ * ~28px at 1920x1080. Every size in the UI is rem-based, so the layout is the
+ * same composition at every resolution and never needs page scroll.
+ */
+html {
+  font-size: clamp(12px, min(2.6vh, 1.46vw), 30px);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+button {
+  cursor: pointer;
+  font: inherit;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle hardwood/court backdrop. */
+.court-bg {
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 120%, rgb(255 138 31 / 0.1), transparent 70%),
+    linear-gradient(180deg, #0d1320 0%, #0b0f17 100%);
+}
+
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.18) transparent;
+}
+.thin-scroll::-webkit-scrollbar {
+  width: 0.35rem;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: rgb(255 255 255 / 0.18);
+  border-radius: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+  }
+}
