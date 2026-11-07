@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# HoopDraft
+node_modules/
+data/raw/
+*.tsbuildinfo
+test-results/
+!scripts/lib/

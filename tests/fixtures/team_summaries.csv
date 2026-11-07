@@ -1,0 +1,8 @@
+season,lg,team,abbreviation,playoffs,age,w,l,pw,pl,mov,sos,srs,o_rtg,d_rtg,n_rtg,pace,f_tr,x3p_ar,ts_percent,e_fg_percent,tov_percent,orb_percent,ft_fga,opp_e_fg_percent,opp_tov_percent,drb_percent,opp_ft_fga,arena,attend,attend_g
+2017,NBA,Golden State Warriors,GSW,TRUE,28.2,67,15,67,15,11.63,-0.28,11.35,115.6,104,11.6,99.8,0.259,0.359,0.597,0.563,13.2,22.8,0.204,0.486,13.5,74.9,0.198,Oracle Arena,803436,19596
+2005,NBA,New Jersey Nets,NJN,TRUE,27.8,42,40,36,46,-1.5,-0.32,-1.82,101.4,103.1,-1.7,89.1,0.318,0.187,0.512,0.463,13.7,25.5,0.242,0.479,15.2,73.2,0.278,Continental Airlines Arena,618681,15090
+1996,NBA,Chicago Bulls,CHI,TRUE,29.9,72,10,70,12,12.24,-0.44,11.8,115.2,101.8,13.4,91.1,0.291,0.196,0.555,0.517,13.1,36.9,0.217,0.482,16.1,71.1,0.222,United Center,969149,23638
+1996,NBA,Seattle SuperSonics,SEA,TRUE,29.6,64,18,61,21,7.79,-0.4,7.4,110.3,102.1,8.2,93.8,0.379,0.249,0.574,0.526,16.2,29.7,0.288,0.479,16.7,69.5,0.252,KeyArena at Seattle Center,697301,17007
+1996,NBA,League Average,NA,FALSE,27.6,NA,NA,41,41,0,0,0,107.6,107.6,NA,91.8,0.329,0.2,0.542,0.499,14.7,30.6,0.243,0.499,14.7,69.4,0.243,NA,703139,17286
+1972,NBA,Los Angeles Lakers,LAL,TRUE,29.5,69,13,67,15,12.28,-0.63,11.65,103.1,92.6,10.5,116.9,0.354,NA,0.537,0.49,14.8,NA,0.26,0.432,13.9,NA,0.177,The Forum,668340,1281
+1972,NBA,Milwaukee Bucks,MIL,TRUE,26.3,63,19,66,16,11.16,-0.46,10.7,102.6,92.6,10,111.2,0.313,NA,0.54,0.498,15.8,NA,0.232,0.42,14.6,NA,0.217,Milwaukee Arena,NA,597
