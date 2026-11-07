@@ -52,7 +52,7 @@ export interface Engine {
 
 export function createEngine(dataset: Dataset): Engine {
   const pools = buildPools(dataset.players);
-  const active = activePools(pools);
+  const active = activePools(pools, dataset.opponents);
   const activeByDecade = new Map<Decade, FranchiseCode[]>();
   const activeByTeam = new Map<FranchiseCode, Decade[]>();
   for (const k of active) {

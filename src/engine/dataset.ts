@@ -1,5 +1,5 @@
 import type { FranchiseCode } from '../config/franchises';
-import { DECADES, POSITIONS, type Dataset, type Decade, type EraBaseline, type OpponentSeason, type Player, type Position } from './types';
+import { POSITIONS, decadeOf, type Dataset, type Decade, type EraBaseline, type OpponentSeason, type Player, type Position } from './types';
 
 export interface RawPlayersFile {
   eras: Record<Decade, EraBaseline>;
@@ -80,19 +80,35 @@ export function positionCounts(pool: Player[]): Record<Position, number> {
   return c;
 }
 
+/** A franchise-decade counts only if the franchise played this many NBA seasons in it. */
+export const MIN_ACTIVE_SEASONS = 3;
+
+/** NBA seasons played per franchise-decade, from the opponents (team-season) table. */
+export function seasonsPlayed(opponents: OpponentSeason[]): Map<PoolKey, number> {
+  const seasons = new Map<PoolKey, number>();
+  for (const o of opponents) {
+    const d = decadeOf(o.season);
+    if (!d) continue;
+    const k = poolKey(o.team, d);
+    seasons.set(k, (seasons.get(k) ?? 0) + 1);
+  }
+  return seasons;
+}
+
 /**
- * Active pools = franchise-decades that existed in the NBA with enough
- * players to draft from. The wheel only lands on active pools.
+ * Active pools = franchise-decades where the franchise played at least
+ * MIN_ACTIVE_SEASONS NBA seasons. This is the same rule validatePools.ts
+ * checks, and the wheel only lands on these. The depth guard below keeps the
+ * draft playable even if the data were ever rebuilt without validation.
  */
-export function activePools(pools: Map<PoolKey, Player[]>): PoolKey[] {
+export function activePools(pools: Map<PoolKey, Player[]>, opponents: OpponentSeason[]): PoolKey[] {
+  const seasons = seasonsPlayed(opponents);
   const keys: PoolKey[] = [];
-  for (const d of DECADES) {
-    for (const [k, list] of pools) {
-      if (!k.endsWith(`|${d}`)) continue;
-      if (list.length < MIN_POOL_SIZE) continue;
-      const c = positionCounts(list);
-      if (POSITIONS.every((p) => c[p] >= MIN_PER_POSITION)) keys.push(k);
-    }
+  for (const [k, list] of pools) {
+    if ((seasons.get(k) ?? 0) < MIN_ACTIVE_SEASONS) continue;
+    if (list.length < MIN_POOL_SIZE) continue;
+    const c = positionCounts(list);
+    if (POSITIONS.every((p) => c[p] >= MIN_PER_POSITION)) keys.push(k);
   }
   return keys.sort();
 }

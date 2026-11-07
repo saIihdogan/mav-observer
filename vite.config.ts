@@ -10,6 +10,16 @@ export default defineConfig({
     target: 'es2022',
     assetsInlineLimit: 0,
     reportCompressedSize: true,
+    // Dataset and vendor libs change rarely: separate chunks cache independently of game code.
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('/src/data/')) return 'data';
+          if (id.includes('node_modules')) return 'vendor';
+        },
+      },
+    },
   },
   test: {
     include: ['tests/**/*.test.ts'],

@@ -57,9 +57,10 @@ describe('data validation (npm run validate:data)', () => {
     expect(r.active).toBeGreaterThan(160);
   });
 
-  it('the wheel only lands on validated pools', () => {
-    expect(engine.active.length).toBeGreaterThan(160);
-    for (const k of engine.active) expect(engine.pools.get(k)!.length).toBeGreaterThanOrEqual(12);
+  it('the wheel lands exactly on the pools the validator checks', () => {
+    const r = validate(playersFile, opponentsFile);
+    expect([...engine.active].sort()).toEqual(r.activeKeys);
+    expect(engine.active).not.toContain('CHA|1980s'); // 1 season (1988-89): inactive
   });
 });
 

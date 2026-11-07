@@ -10,10 +10,18 @@
  */
 import { readFileSync } from 'node:fs';
 import { FRANCHISE_CODES, FRANCHISES } from '../src/config/franchises';
-import { buildPools, decodeOpponents, decodePlayers, MIN_PER_POSITION, MIN_POOL_SIZE, poolKey, positionCounts } from '../src/engine/dataset';
-import { DECADES, POSITIONS, decadeOf, type Player } from '../src/engine/types';
-
-export const MIN_ACTIVE_SEASONS = 3;
+import {
+  buildPools,
+  decodeOpponents,
+  decodePlayers,
+  MIN_ACTIVE_SEASONS,
+  MIN_PER_POSITION,
+  MIN_POOL_SIZE,
+  poolKey,
+  positionCounts,
+  seasonsPlayed,
+} from '../src/engine/dataset';
+import { DECADES, POSITIONS, type Player } from '../src/engine/types';
 
 const NUMERIC_FIELDS = ['season', 'g', 'mpg', 'ppg', 'rpg', 'apg', 'spg', 'bpg', 'ts', 'tpa', 'tpp', 'ftp'] as const satisfies readonly (keyof Player)[];
 const STRING_FIELDS = ['id', 'realName', 'aliasName', 'team', 'decade'] as const satisfies readonly (keyof Player)[];
@@ -21,6 +29,7 @@ const STRING_FIELDS = ['id', 'realName', 'aliasName', 'team', 'decade'] as const
 export interface ValidationReport {
   errors: string[];
   active: number;
+  activeKeys: string[];
   inactive: string[];
   cards: number;
 }
@@ -52,13 +61,10 @@ export function validate(playersJson: unknown, opponentsJson: unknown): Validati
     if (![o.season, o.srs, o.w, o.l].every(Number.isFinite)) errors.push(`opponent ${o.team} ${o.season} has non-finite values`);
   }
 
-  const seasons = new Map<string, number>();
-  for (const o of opponents) {
-    const k = poolKey(o.team, decadeOf(o.season)!);
-    seasons.set(k, (seasons.get(k) ?? 0) + 1);
-  }
+  const seasons = seasonsPlayed(opponents);
   const pools = buildPools(players);
   let active = 0;
+  const activeKeys: string[] = [];
   const inactive: string[] = [];
   for (const team of FRANCHISE_CODES) {
     for (const d of DECADES) {
@@ -69,6 +75,7 @@ export function validate(playersJson: unknown, opponentsJson: unknown): Validati
         continue;
       }
       active++;
+      activeKeys.push(k);
       const pool = pools.get(k) ?? [];
       if (pool.length < MIN_POOL_SIZE) errors.push(`${k}: only ${pool.length} cards (< ${MIN_POOL_SIZE})`);
       const c = positionCounts(pool);
@@ -77,7 +84,7 @@ export function validate(playersJson: unknown, opponentsJson: unknown): Validati
       }
     }
   }
-  return { errors, active, inactive, cards: players.length };
+  return { errors, active, activeKeys: activeKeys.sort(), inactive, cards: players.length };
 }
 
 const isMain = process.argv[1]?.endsWith('validatePools.ts');

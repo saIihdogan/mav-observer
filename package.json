@@ -13,7 +13,8 @@
     "validate:data": "tsx scripts/validatePools.ts",
     "test": "vitest run",
     "test:sim": "vitest run tests/calibration.test.ts --reporter=verbose --silent=false",
-    "calibrate": "tsx scripts/calibrate.ts"
+    "calibrate": "tsx scripts/calibrate.ts",
+    "test:layout": "vite build && node scripts/checkLayout.mjs"
   },
   "dependencies": {
     "motion": "^12.23.24",
